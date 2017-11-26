@@ -212,7 +212,7 @@ fi
 # Environment
 #
 # Add an export of PATH which includes our compile dir, etc.
-echo "-----> Adding PATH environment"
+echo "-----> Adding PATH environment: $PATH"
 mkdir -p "$APP_CHECKOUT_DIR"/.profile.d
 cat > "$APP_CHECKOUT_DIR"/.profile.d/path.sh <<EOF
   #!/bin/sh
