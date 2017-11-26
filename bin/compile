@@ -160,6 +160,7 @@ fi
 # Copy node into place for production.
 NODE="$COMPILE_DIR"/bin/node
 cp "$METEOR_NODE" "$NODE"
+cp "$METEOR_NODE" "$NODE"
 chmod a+x "$NODE"
 
 # Add npm and node path so that 1.4's npm-rebuild.js will function.
@@ -173,6 +174,8 @@ echo "----->    and npm: `$METEOR_NPM --version`"
 if [ -e "$APP_SOURCE_DIR"/package.json ]; then
   rm -rf ./node_modules
   $METEOR_NPM install
+  $METEOR_NPM install -g meteor-client-bundler
+  `dirname "$METEOR_NODE"`/meteor-client bundle -s api
 fi
 
 # Related to https://github.com/meteor/meteor/issues/2796 and
@@ -212,7 +215,7 @@ fi
 # Environment
 #
 # Add an export of PATH which includes our compile dir, etc.
-echo "-----> Adding PATH environment: $PATH"
+echo "-----> Adding PATH environment"
 mkdir -p "$APP_CHECKOUT_DIR"/.profile.d
 cat > "$APP_CHECKOUT_DIR"/.profile.d/path.sh <<EOF
   #!/bin/sh
