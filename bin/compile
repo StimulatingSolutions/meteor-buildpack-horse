@@ -152,6 +152,10 @@ METEOR_NODE=`METEOR node -e "process.stdout.write(process.execPath)"`
 # Assume npm/yarn is in the same dir as node.
 PACKAGE_MANAGER=${METEOR_PACKAGE_MANAGER:-npm}
 METEOR_NPM="`dirname "$METEOR_NODE"`/$METEOR_PACKAGE_MANAGER"
+if [ ! -f "$METEOR_NPM" ] ; then
+  echo "-----> Attempting to install $METEOR_PACKAGE_MANAGER"
+  meteor npm install -g $METEOR_PACKAGE_MANAGER
+fi
 
 if [ -z "$METEOR_NPM" ] || [ -z "$METEOR_NODE" ] ; then
   echo "FATAL: Can't find npm/node within meteor bundle. This is a bug. Please open an issue at https://github.com/AdmitHub/meteor-buildpack-horse.";
