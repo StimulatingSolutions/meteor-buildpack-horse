@@ -154,7 +154,7 @@ PACKAGE_MANAGER=${METEOR_PACKAGE_MANAGER:-npm}
 METEOR_NPM="`dirname "$METEOR_NODE"`/$METEOR_PACKAGE_MANAGER"
 if [ ! -f "$METEOR_NPM" ] ; then
   echo "-----> Attempting to install $METEOR_PACKAGE_MANAGER"
-  meteor npm install -g $METEOR_PACKAGE_MANAGER
+  METEOR npm install -g $METEOR_PACKAGE_MANAGER
 fi
 
 if [ -z "$METEOR_NPM" ] || [ -z "$METEOR_NODE" ] ; then
