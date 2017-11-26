@@ -140,8 +140,8 @@ if [ -z "$SERVER_ONLY_FLAG" ]; then
   echo "-----> Moving on."
 fi
 
-# Identify the npm/node to use. We need to copy the node binary out to get the
-# correct version in the built slug (e.g. 0.10.x for Meteor<1.4, 4.x for
+# Identify the npm/yarn and node to use. We need to copy the node binary out to
+# get the correct version in the built slug (e.g. 0.10.x for Meteor<1.4, 4.x for
 # Meteor>=1.4).  We can't copy the whole meteor world because that's too large
 # (Issue #125).
 
@@ -149,8 +149,9 @@ fi
 # install.meteor.com is >=1.3, "meteor node" is available, even if the target
 # release predates that feature.
 METEOR_NODE=`METEOR node -e "process.stdout.write(process.execPath)"`
-# Assume npm is in the same dir as node.
-METEOR_NPM="`dirname "$METEOR_NODE"`/npm"
+# Assume npm/yarn is in the same dir as node.
+PACKAGE_MANAGER=${METEOR_PACKAGE_MANAGER:-npm}
+METEOR_NPM="`dirname "$METEOR_NODE"`/$METEOR_PACKAGE_MANAGER"
 
 if [ -z "$METEOR_NPM" ] || [ -z "$METEOR_NODE" ] ; then
   echo "FATAL: Can't find npm/node within meteor bundle. This is a bug. Please open an issue at https://github.com/AdmitHub/meteor-buildpack-horse.";
@@ -162,13 +163,13 @@ NODE="$COMPILE_DIR"/bin/node
 cp "$METEOR_NODE" "$NODE"
 chmod a+x "$NODE"
 
-# Add npm and node path so that 1.4's npm-rebuild.js will function.
+# Add npm/yarn and node path so that 1.4's npm-rebuild.js will function.
 PATH="$METEOR_DIR/.meteor:`dirname $METEOR_NPM`:$COMPILE_DIR/bin:$PATH"
 
 echo "-----> Using node: `$NODE --version`"
-echo "----->    and npm: `$METEOR_NPM --version`"
+echo "----->    and $METEOR_PACKAGE_MANAGER: `$METEOR_NPM --version`"
 
-# If we use npm on root, run npm install.  Don't use `--production` here, as we
+# If we use npm/yarn on root, run npm install.  Don't use `--production` here, as we
 # may need devDependencies (e.g. webpack) in order to build the meteor app.
 if [ -e "$APP_SOURCE_DIR"/package.json ]; then
   $METEOR_NPM install
