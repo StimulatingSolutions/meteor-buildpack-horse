@@ -173,6 +173,17 @@ echo "----->    and npm: `$METEOR_NPM --version`"
 if [ -e "$APP_SOURCE_DIR"/package.json ]; then
   rm -rf node_modules
   $METEOR_NPM install
+  
+  ./scripts/prod-unbundle.sh
+  rm -f client-bundle.tgz
+  
+  # mock the cordova.js file because the webapp doesn't need it, but still tries to load
+  cat "// mock cordova.js file for webapp deployment" > ./www/cordova.js
+
+  cd api
+  # statically serve up all files from www; see server/doc-root.ts to see how index.html is handled as /
+  ln -s ../www public
+  cd ..
 fi
 
 # Related to https://github.com/meteor/meteor/issues/2796 and
