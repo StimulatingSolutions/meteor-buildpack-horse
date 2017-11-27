@@ -163,7 +163,7 @@ cp "$METEOR_NODE" "$NODE"
 chmod a+x "$NODE"
 
 # Add npm and node path so that 1.4's npm-rebuild.js will function.
-export PATH="$METEOR_DIR/.meteor:`dirname $METEOR_NPM`:$COMPILE_DIR/bin:$PATH"
+PATH="$METEOR_DIR/.meteor:`dirname $METEOR_NPM`:$COMPILE_DIR/bin:$PATH"
 
 echo "-----> Using node: `$NODE --version`"
 echo "----->    and npm: `$METEOR_NPM --version`"
@@ -171,13 +171,8 @@ echo "----->    and npm: `$METEOR_NPM --version`"
 # If we use npm on root, run npm install.  Don't use `--production` here, as we
 # may need devDependencies (e.g. webpack) in order to build the meteor app.
 if [ -e "$APP_SOURCE_DIR"/package.json ]; then
-  rm -rf ./node_modules
-  echo "-----> npm install"
+  rm -rf node_modules
   $METEOR_NPM install
-  echo "-----> npm install -g meteor-client-bundler"
-  $METEOR_NPM install -g meteor-client-bundler
-  echo "-----> meteor-client bundle -s api"
-  HOME="$METEOR_DIR" `dirname "$METEOR_NODE"`/meteor-client bundle -s api
 fi
 
 # Related to https://github.com/meteor/meteor/issues/2796 and
