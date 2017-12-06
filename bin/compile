@@ -181,9 +181,9 @@ if [ -e "$APP_SOURCE_DIR"/package.json ]; then
   # mock the cordova.js file because the webapp doesn't need it, but still tries to load
   echo "// mock cordova.js file for webapp deployment" > ./www/cordova.js
 
-  cd api
+  #cd api
   # statically serve up all files from www; see server/doc-root.ts to see how index.html is handled as /
-  ln -s ../www public
+  #ln -s ../www public
 fi
 
 # Related to https://github.com/meteor/meteor/issues/2796 and
