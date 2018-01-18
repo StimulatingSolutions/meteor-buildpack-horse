@@ -179,7 +179,7 @@ if [ -e "$APP_SOURCE_DIR"/package.json ]; then
   rm -f client-bundle.tgz
   
   # mock the cordova.js file because the webapp doesn't need it, but still tries to load
-  #echo "// mock cordova.js file for webapp deployment" > ./www/cordova.js
+  echo "// mock cordova.js file for webapp deployment" > ./www/cordova.js
 
   cd api
   # statically serve up all files from www; see server/doc-root.ts to see how index.html is handled as /
